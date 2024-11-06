@@ -19,61 +19,55 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.logging.log4j</groupId>
-    <artifactId>log4j</artifactId>
+    <artifactId>log4j-jdk-parent</artifactId>
     <version>${revision}</version>
-    <relativePath>../log4j-parent</relativePath>
+    <relativePath>../parent</relativePath>
   </parent>
-  <artifactId>log4j-to-jul</artifactId>
+
+  <artifactId>log4j-api-to-jul</artifactId>
   <packaging>jar</packaging>
-  <name>Apache Log4j to JUL Bridge</name>
+  <name>Log4j API to JUL logging bridge</name>
   <description>The Apache Log4j binding between Log4j 2 API and java.util.logging (JUL).</description>
+
   <inceptionYear>2022</inceptionYear>
 
   <properties>
-    <bnd-extra-package-options>
-      <!-- Annotations only -->
-      org.jspecify.*;resolution:=optional
-    </bnd-extra-package-options>
-    <bnd-extra-module-options>
-      <!-- Remove `transitive` for optional dependencies -->
-      org.jspecify;transitive=false
-    </bnd-extra-module-options>
+    <!-- Dependency versions -->
+    <osgi.framework.version>1.8.0</osgi.framework.version>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>org.jspecify</groupId>
-      <artifactId>jspecify</artifactId>
-      <scope>provided</scope>
-    </dependency>
+
     <dependency>
       <groupId>org.osgi</groupId>
-      <artifactId>org.osgi.core</artifactId>
+      <artifactId>org.osgi.framework</artifactId>
+      <version>${osgi.framework.version}</version>
       <scope>provided</scope>
     </dependency>
+
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava-testlib</artifactId>
+      <version>33.3.1-jre</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
+      <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.junit.vintage</groupId>
-      <artifactId>junit-vintage-engine</artifactId>
-      <scope>test</scope>
-    </dependency>
+
   </dependencies>
 </project>

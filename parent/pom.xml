@@ -31,9 +31,18 @@
   <url>https://logging.apache.org/log4j/2.x/manual/installation.html</url>
 
   <properties>
+    <!-- Skips BND Baseline until the first release -->
+    <bnd.baseline.fail.on.missing>false</bnd.baseline.fail.on.missing>
 
     <!-- dependency versions -->
+    <assertj.version>3.26.3</assertj.version>
+    <bnd.annotation.version>7.0.0</bnd.annotation.version>
+    <hamcrest.version>2.2</hamcrest.version>
+    <jspecify.version>1.0.0</jspecify.version>
+    <junit.version>5.11.3</junit.version>
     <log4j.version>2.24.1</log4j.version>
+    <osgi.bundle.version>2.0.0</osgi.bundle.version>
+    <osgi.versioning.version>1.1.2</osgi.versioning.version>
 
   </properties>
 
@@ -41,12 +50,66 @@
     <dependencies>
 
       <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest</artifactId>
+        <version>${hamcrest.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-bom</artifactId>
+        <version>${assertj.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
         <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-api</artifactId>
+        <artifactId>log4j-bom</artifactId>
         <version>${log4j.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${junit.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
 
     </dependencies>
   </dependencyManagement>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>biz.aQute.bnd</groupId>
+      <artifactId>biz.aQute.bnd.annotation</artifactId>
+      <version>${bnd.annotation.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jspecify</groupId>
+      <artifactId>jspecify</artifactId>
+      <version>${jspecify.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.annotation.bundle</artifactId>
+      <version>${osgi.bundle.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.annotation.versioning</artifactId>
+      <version>${osgi.versioning.version}</version>
+    </dependency>
+
+  </dependencies>
 
 </project>

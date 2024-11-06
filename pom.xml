@@ -59,6 +59,7 @@
     <module>parent</module>
 
     <!-- Modules here must have a corresponding entry in `dependencyManagement > dependencies` block below! -->
+    <module>log4j-api-to-jul</module>
 
   </modules>
 
@@ -97,7 +98,15 @@
   <!-- `dependencyManagement` must only contain `jdk` modules and nothing else!
        Modules here must have a corresponding entry in `modules` block above! -->
   <dependencyManagement>
-    <dependencies />
+    <dependencies>
+
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api-to-jul</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+    </dependencies>
   </dependencyManagement>
 
   <build>
