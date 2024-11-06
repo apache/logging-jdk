@@ -38,7 +38,6 @@ github:
     - log4j
     - log4j2
     - logging
-    - java.util.logging
     - jul
     - jpl
 
