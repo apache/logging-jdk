@@ -60,6 +60,7 @@
 
     <!-- Modules here must have a corresponding entry in `dependencyManagement > dependencies` block below! -->
     <module>jpl-to-log4j-api</module>
+    <module>jul-to-log4j-api</module>
     <module>log4j-api-to-jul</module>
 
   </modules>
@@ -104,6 +105,12 @@
       <dependency>
         <groupId>org.apache.logging.log4j</groupId>
         <artifactId>jpl-to-log4j-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>jul-to-log4j-api</artifactId>
         <version>${project.version}</version>
       </dependency>
 

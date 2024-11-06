@@ -19,16 +19,23 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.logging.log4j</groupId>
-    <artifactId>log4j</artifactId>
+    <artifactId>log4j-jdk-parent</artifactId>
     <version>${revision}</version>
-    <relativePath>../log4j-parent</relativePath>
+    <relativePath>../parent</relativePath>
   </parent>
 
-  <artifactId>jul-to-log4j</artifactId>
-  <name>Apache Log4j JUL LogManager</name>
+  <artifactId>jul-to-log4j-api</artifactId>
+  <name>JUL to Log4j API logging bridge</name>
   <description>A `java.util.logging` LogManager that forwards events to the Log4j API.</description>
 
   <properties>
+    <!-- Skips BND Baseline until the first release -->
+    <bnd.baseline.fail.on.missing>false</bnd.baseline.fail.on.missing>
+
+    <!-- TODO: Adapt to Java 9 -->
+    <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
+    <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
     <!--
       ~ OSGi and JPMS options
       -->
@@ -40,6 +47,9 @@
       <!-- Optional modules can not be `transitive` -->
       org.jspecify;transitive=false
     </bnd-extra-module-options>
+
+    <!-- Dependency versions -->
+    <log4j.version>3.0.0-SNAPSHOT</log4j.version>
   </properties>
 
   <dependencies>
@@ -61,18 +71,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-async-logger</artifactId>
       <scope>test</scope>
@@ -89,6 +87,7 @@
       <artifactId>log4j-core-test</artifactId>
       <scope>test</scope>
     </dependency>
+
   </dependencies>
 
   <build>
@@ -96,22 +95,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <systemPropertyVariables>
-            <java.awt.headless>true</java.awt.headless>
-          </systemPropertyVariables>
-          <argLine>-Xms256m -Xmx1024m</argLine>
-          <forkCount>1</forkCount>
-          <reuseForks>false</reuseForks>
-        </configuration>
-        <dependencies>
-          <!-- The `surefire-junit-platform` provider initializes JUL before tests start -->
-          <dependency>
-            <groupId>org.apache.maven.surefire</groupId>
-            <artifactId>surefire-junit47</artifactId>
-            <version>${surefire.version}</version>
-          </dependency>
-        </dependencies>
         <executions>
           <execution>
             <id>default-test</id>
@@ -120,9 +103,47 @@
             </goals>
             <phase>test</phase>
             <configuration>
+              <excludes>
+                <exclude>**/AsyncLoggerThreadsTest.class</exclude>
+                <exclude>**/CustomLoggerAdapterTest.class</exclude>
+              </excludes>
               <!-- Use custom `j.u.l.LogManager` -->
               <systemPropertyVariables>
                 <java.util.logging.manager>org.apache.logging.jul.tolog4j.LogManager</java.util.logging.manager>
+              </systemPropertyVariables>
+            </configuration>
+          </execution>
+          <execution>
+            <id>async-logger-test</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <phase>test</phase>
+            <configuration>
+              <includes>
+                <include>**/AsyncLoggerThreadsTest.class</include>
+              </includes>
+              <!-- Use custom `j.u.l.LogManager` and an asynchronous selector -->
+              <systemPropertyVariables>
+                <java.util.logging.manager>org.apache.logging.jul.tolog4j.LogManager</java.util.logging.manager>
+                <log4j.loggerContext.selector>org.apache.logging.log4j.async.logger.AsyncLoggerContextSelector</log4j.loggerContext.selector>
+              </systemPropertyVariables>
+            </configuration>
+          </execution>
+          <execution>
+            <id>custom-logger-adapter-test</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <phase>test</phase>
+            <configuration>
+              <includes>
+                <include>**/CustomLoggerAdapterTest.class</include>
+              </includes>
+              <!-- Use custom `j.u.l.LogManager` and a custom adapter -->
+              <systemPropertyVariables>
+                <java.util.logging.manager>org.apache.logging.jul.tolog4j.LogManager</java.util.logging.manager>
+                <log4j.jul.loggerAdapter>org.apache.logging.jul.tolog4j.test.support.CustomLoggerAdapterTest$CustomLoggerAdapter</log4j.jul.loggerAdapter>
               </systemPropertyVariables>
             </configuration>
           </execution>
