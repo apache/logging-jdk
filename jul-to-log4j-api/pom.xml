@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to you under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-jdk-parent</artifactId>
+    <version>${revision}</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+
+  <artifactId>jul-to-log4j-api</artifactId>
+  <name>JUL to Log4j API logging bridge</name>
+  <description>A `java.util.logging` LogManager that forwards events to the Log4j API.</description>
+
+  <properties>
+    <!-- Skips BND Baseline until the first release -->
+    <bnd.baseline.fail.on.missing>false</bnd.baseline.fail.on.missing>
+
+    <!-- TODO: Adapt to Java 9 -->
+    <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
+    <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
+    <!--
+      ~ OSGi and JPMS options
+      -->
+    <bnd-extra-package-options>
+      <!-- Optional annotations -->
+      org.jspecify.*;resolution:=optional
+    </bnd-extra-package-options>
+    <bnd-extra-module-options>
+      <!-- Optional modules can not be `transitive` -->
+      org.jspecify;transitive=false
+    </bnd-extra-module-options>
+
+    <!-- Dependency versions -->
+    <log4j.version>3.0.0-SNAPSHOT</log4j.version>
+  </properties>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-kit</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-async-logger</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-test</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <phase>test</phase>
+            <configuration>
+              <excludes>
+                <exclude>**/AsyncLoggerThreadsTest.class</exclude>
+                <exclude>**/CustomLoggerAdapterTest.class</exclude>
+              </excludes>
+              <!-- Use custom `j.u.l.LogManager` -->
+              <systemPropertyVariables>
+                <java.util.logging.manager>org.apache.logging.jul.tolog4j.LogManager</java.util.logging.manager>
+              </systemPropertyVariables>
+            </configuration>
+          </execution>
+          <execution>
+            <id>async-logger-test</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <phase>test</phase>
+            <configuration>
+              <includes>
+                <include>**/AsyncLoggerThreadsTest.class</include>
+              </includes>
+              <!-- Use custom `j.u.l.LogManager` and an asynchronous selector -->
+              <systemPropertyVariables>
+                <java.util.logging.manager>org.apache.logging.jul.tolog4j.LogManager</java.util.logging.manager>
+                <log4j.loggerContext.selector>org.apache.logging.log4j.async.logger.AsyncLoggerContextSelector</log4j.loggerContext.selector>
+              </systemPropertyVariables>
+            </configuration>
+          </execution>
+          <execution>
+            <id>custom-logger-adapter-test</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <phase>test</phase>
+            <configuration>
+              <includes>
+                <include>**/CustomLoggerAdapterTest.class</include>
+              </includes>
+              <!-- Use custom `j.u.l.LogManager` and a custom adapter -->
+              <systemPropertyVariables>
+                <java.util.logging.manager>org.apache.logging.jul.tolog4j.LogManager</java.util.logging.manager>
+                <log4j.jul.loggerAdapter>org.apache.logging.jul.tolog4j.test.support.CustomLoggerAdapterTest$CustomLoggerAdapter</log4j.jul.loggerAdapter>
+              </systemPropertyVariables>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
