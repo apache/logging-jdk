@@ -33,7 +33,7 @@
   <properties>
 
     <!-- dependency versions -->
-    <log4j.version>2.24.1</log4j.version>
+    <log4j.version>2.24.3</log4j.version>
 
   </properties>
 
