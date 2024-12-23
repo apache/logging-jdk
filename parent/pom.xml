@@ -34,6 +34,11 @@
     <!-- Skips BND Baseline until the first release -->
     <bnd.baseline.fail.on.missing>false</bnd.baseline.fail.on.missing>
 
+    <!-- Use a baseline of Java 9 -->
+    <maven.compiler.release>9</maven.compiler.release>
+    <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
+    <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
+
     <!-- dependency versions -->
     <assertj.version>3.26.3</assertj.version>
     <bnd.annotation.version>7.0.0</bnd.annotation.version>
@@ -69,12 +74,6 @@
         <version>${log4j.version}</version>
         <type>pom</type>
         <scope>import</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hamcrest</groupId>
-        <artifactId>hamcrest</artifactId>
-        <version>${hamcrest.version}</version>
       </dependency>
 
       <dependency>
