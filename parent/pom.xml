@@ -36,7 +36,7 @@
 
     <!-- dependency versions -->
     <assertj.version>3.26.3</assertj.version>
-    <bnd.annotation.version>7.0.0</bnd.annotation.version>
+    <bnd.annotation.version>7.1.0</bnd.annotation.version>
     <hamcrest.version>2.2</hamcrest.version>
     <jspecify.version>1.0.0</jspecify.version>
     <junit.version>5.11.3</junit.version>
