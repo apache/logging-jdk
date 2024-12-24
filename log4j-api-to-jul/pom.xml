@@ -33,7 +33,7 @@
 
   <properties>
     <!-- Dependency versions -->
-    <osgi.framework.version>1.8.0</osgi.framework.version>
+    <osgi.framework.version>1.10.0</osgi.framework.version>
   </properties>
 
   <dependencies>
