@@ -35,7 +35,7 @@
     <bnd.baseline.fail.on.missing>false</bnd.baseline.fail.on.missing>
 
     <!-- dependency versions -->
-    <assertj.version>3.26.3</assertj.version>
+    <assertj.version>3.27.1</assertj.version>
     <bnd.annotation.version>7.0.0</bnd.annotation.version>
     <hamcrest.version>2.2</hamcrest.version>
     <jspecify.version>1.0.0</jspecify.version>
